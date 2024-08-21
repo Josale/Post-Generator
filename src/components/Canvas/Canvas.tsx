@@ -1,15 +1,25 @@
+// Canvas.tsx
 import React, { Component } from 'react'
 import './Canvas.scss'
+import ImageScaler from './ImageScaler'
+import LogoSwitch from './LogoSwitch'
+import TextInput from './TextInput'
 
 interface CanvasState {
   imageSrc: string | null;
+  scale: number;
+  showLogo: boolean;
+  text: string;
 }
 
-export default class Canvas extends Component<{}, CanvasState> {
+class Canvas extends Component<{}, CanvasState> {
   constructor(props: {}) {
     super(props);
     this.state = {
       imageSrc: null,
+      scale: 1,
+      showLogo: false,
+      text: '',
     };
   }
 
@@ -21,15 +31,42 @@ export default class Canvas extends Component<{}, CanvasState> {
     }
   };
 
-  render(): React.ReactNode {
-    const { imageSrc } = this.state;
+  handleScaleChange = (scale: number) => {
+    this.setState({ scale });
+  };
+
+  handleLogoSwitchChange = (showLogo: boolean) => {
+    this.setState({ showLogo });
+  };
+
+  handleTextChange = (text: string) => {
+    this.setState({ text });
+  };
+
+  handleGenerateImage = () => {
+    console.log('Generating image with state:', this.state);
+  };
+
+  render() {
+    const { imageSrc, scale, showLogo, text } = this.state;
 
     return (
-      <div className="canvas">
-        {/* IMG */}
-        <div className="canvas__image" style={{ backgroundImage: `url(${imageSrc})` }} />
-        <input type="file" accept="image/*" onChange={this.handleImageUpload} className="canvas__upload-input" />
+      <div className='container'>
+        <div className="canvas">
+          <div className="canvas__image" style={{ backgroundImage: `url(${imageSrc})`, transform: `scale(${scale})` }} />
+          <input type="file" accept="image/*" onChange={this.handleImageUpload} className="canvas__upload-input" />
+        </div>
+
+        <ImageScaler scale={scale} onChange={this.handleScaleChange} />
+        <LogoSwitch showLogo={showLogo} onChange={this.handleLogoSwitchChange} />
+        <TextInput text={text} onTextChange={this.handleTextChange} />
+
+        <button onClick={this.handleGenerateImage} className="canvas__generate-button">
+          Generate Image
+        </button>
       </div>
     );
   }
 }
+
+export default Canvas;
