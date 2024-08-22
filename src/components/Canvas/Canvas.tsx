@@ -68,20 +68,10 @@ export default class Canvas extends Component<{}, CanvasState> {
             <div className="canvas__text canvas__description">{description}</div>
         </div>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={this.handleImageUpload}
-          className="canvas__upload-input"
-        />
+        <input type="file" accept="image/*" onChange={this.handleImageUpload} className="canvas__upload-input" />
         <ImageScaler scale={scale} onChange={this.handleScaleChange} />
         <LogoSwitch showLogo={showLogo} onChange={this.handleLogoSwitchChange} />
-        <TextInput
-          title={title}
-          description={description}
-          onTitleChange={this.handleTitleChange}
-          onDescriptionChange={this.handleDescriptionChange}
-        />
+        <TextInput title={title} description={description} onTitleChange={this.handleTitleChange} onDescriptionChange={this.handleDescriptionChange} />
       </div>
     );
   }
