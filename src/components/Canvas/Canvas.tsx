@@ -1,4 +1,3 @@
-// Canvas.tsx
 import React, { Component } from 'react'
 import './Canvas.scss'
 import ImageScaler from './ImageScaler'
@@ -9,17 +8,19 @@ interface CanvasState {
   imageSrc: string | null;
   scale: number;
   showLogo: boolean;
-  text: string;
+  title: string;
+  description: string;
 }
 
-class Canvas extends Component<{}, CanvasState> {
+export default class Canvas extends Component<{}, CanvasState> {
   constructor(props: {}) {
     super(props);
     this.state = {
       imageSrc: null,
       scale: 1,
       showLogo: false,
-      text: '',
+      title: '',
+      description: '',
     };
   }
 
@@ -39,34 +40,49 @@ class Canvas extends Component<{}, CanvasState> {
     this.setState({ showLogo });
   };
 
-  handleTextChange = (text: string) => {
-    this.setState({ text });
+  handleTitleChange = (title: string) => {
+    this.setState({ title });
   };
 
-  handleGenerateImage = () => {
-    console.log('Generating image with state:', this.state);
+  handleDescriptionChange = (description: string) => {
+    this.setState({ description });
   };
 
   render() {
-    const { imageSrc, scale, showLogo, text } = this.state;
+    const { imageSrc, scale, showLogo, title, description } = this.state;
 
     return (
-      <div className='container'>
+      <div className="container">
         <div className="canvas">
-          <div className="canvas__image" style={{ backgroundImage: `url(${imageSrc})`, transform: `scale(${scale})` }} />
-          <input type="file" accept="image/*" onChange={this.handleImageUpload} className="canvas__upload-input" />
+          <div
+            className="canvas__image"
+            style={{
+              backgroundImage: `url(${imageSrc})`,
+              transform: `scale(${scale})`,
+            }}
+          >
+          </div>
+          {showLogo && <div className="canvas__logo" />}
+          <div className="canvas__template" />
+          <div className="canvas__text canvas__title">{title}</div>
+            <div className="canvas__text canvas__description">{description}</div>
         </div>
 
+        <input
+          type="file"
+          accept="image/*"
+          onChange={this.handleImageUpload}
+          className="canvas__upload-input"
+        />
         <ImageScaler scale={scale} onChange={this.handleScaleChange} />
         <LogoSwitch showLogo={showLogo} onChange={this.handleLogoSwitchChange} />
-        <TextInput text={text} onTextChange={this.handleTextChange} />
-
-        <button onClick={this.handleGenerateImage} className="canvas__generate-button">
-          Generate Image
-        </button>
+        <TextInput
+          title={title}
+          description={description}
+          onTitleChange={this.handleTitleChange}
+          onDescriptionChange={this.handleDescriptionChange}
+        />
       </div>
     );
   }
 }
-
-export default Canvas;
