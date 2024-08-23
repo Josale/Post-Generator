@@ -16,7 +16,7 @@ export default class ImageScaler extends Component<ImageScalerProps> {
     return (
       <div className="scale-slider">
         <label htmlFor="scale">Scale:</label>
-        <input type="range" id="scale" min="1" max="3" step="0.1" value={scale} onChange={this.handleChange} />
+        <input type="range" id="scale" min="1" max="10" step="0.1" value={scale} onChange={this.handleChange} />
         <span>{scale}</span>
       </div>
     );

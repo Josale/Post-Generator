@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './Canvas.scss'
+import ImageDragger from './ImageDragger'
 import ImageScaler from './ImageScaler'
 import LogoSwitch from './LogoSwitch'
 import TextInput from './TextInput'
@@ -10,6 +11,8 @@ interface CanvasState {
   showLogo: boolean;
   title: string;
   description: string;
+  imageX: number;
+  imageY: number;
 }
 
 export default class Canvas extends Component<{}, CanvasState> {
@@ -21,6 +24,8 @@ export default class Canvas extends Component<{}, CanvasState> {
       showLogo: false,
       title: '',
       description: '',
+      imageX: 0, 
+      imageY: 0,
     };
   }
 
@@ -48,24 +53,32 @@ export default class Canvas extends Component<{}, CanvasState> {
     this.setState({ description });
   };
 
+  handleDrag = (deltaX: number, deltaY: number) => {
+    this.setState((prevState) => ({
+      imageX: prevState.imageX + deltaX,
+      imageY: prevState.imageY + deltaY,
+    }));
+  };
+
   render() {
-    const { imageSrc, scale, showLogo, title, description } = this.state;
+    const { imageSrc, scale, showLogo, title, description, imageX, imageY } = this.state;
 
     return (
       <div className="container">
         <div className="canvas">
-          <div
-            className="canvas__image"
-            style={{
-              backgroundImage: `url(${imageSrc})`,
-              transform: `scale(${scale})`,
-            }}
-          >
-          </div>
+          <ImageDragger onDrag={this.handleDrag}>
+            <div
+              className="canvas__image"
+              style={{
+                backgroundImage: `url(${imageSrc})`,
+                transform: `translate(${imageX}px, ${imageY}px) scale(${scale})`,
+              }}
+            ></div>
+          </ImageDragger>
           {showLogo && <div className="canvas__logo" />}
           <div className="canvas__template" />
           <div className="canvas__text canvas__title">{title}</div>
-            <div className="canvas__text canvas__description">{description}</div>
+          <div className="canvas__text canvas__description">{description}</div>
         </div>
 
         <input type="file" accept="image/*" onChange={this.handleImageUpload} className="canvas__upload-input" />
