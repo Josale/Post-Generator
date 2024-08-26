@@ -22,7 +22,7 @@ export default class TextInput extends Component<TextInputProps> {
     return (
       <div className="text-input">
         <label htmlFor="title">Title:</label>
-        <input type="text" id="title" value={title} maxLength={23} onChange={this.handleTitleChange} />
+        <input type="text" id="title" value={title} maxLength={40} onChange={this.handleTitleChange} />
         <label htmlFor="description">Description:</label>
         <input type="text" id="description" value={description} maxLength={60} onChange={this.handleDescriptionChange}/>
       </div>
