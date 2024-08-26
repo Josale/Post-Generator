@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import './Canvas.scss'
 import ImageDragger from './ImageDragger'
 import ImageScaler from './ImageScaler'
 import LogoSwitch from './LogoSwitch'
+import ScreenshotButton from './ScreenshotButton'
 import TextInput from './TextInput'
 
 interface CanvasState {
-  imageSrc: string | null;
+  imageSrc: string | null; 
   scale: number;
   showLogo: boolean;
   title: string;
@@ -16,6 +17,8 @@ interface CanvasState {
 }
 
 export default class Canvas extends Component<{}, CanvasState> {
+  canvasRef: React.RefObject<HTMLDivElement>;
+
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -24,9 +27,11 @@ export default class Canvas extends Component<{}, CanvasState> {
       showLogo: false,
       title: '',
       description: '',
-      imageX: 0, 
+      imageX: 0,
       imageY: 0,
     };
+
+    this.canvasRef = createRef();
   }
 
   handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -65,7 +70,8 @@ export default class Canvas extends Component<{}, CanvasState> {
 
     return (
       <div className="container">
-        <div className="canvas">
+        
+        <div className="canvas" ref={this.canvasRef}>
           <ImageDragger onDrag={this.handleDrag}>
             <div
               className="canvas__image"
@@ -82,9 +88,12 @@ export default class Canvas extends Component<{}, CanvasState> {
         </div>
 
         <input type="file" accept="image/*" onChange={this.handleImageUpload} className="canvas__upload-input" />
+        
         <ImageScaler scale={scale} onChange={this.handleScaleChange} />
         <LogoSwitch showLogo={showLogo} onChange={this.handleLogoSwitchChange} />
         <TextInput title={title} description={description} onTitleChange={this.handleTitleChange} onDescriptionChange={this.handleDescriptionChange} />
+        
+        <ScreenshotButton targetRef={this.canvasRef} />
       </div>
     );
   }
